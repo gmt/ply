@@ -1,5 +1,138 @@
+IMPORTANT NOTE (2018-12-22): PLY is no longer be released in any
+package-installable format. If you want to use the latest version, you
+need to COPY the contents of the ply/ directory into your own project
+and use it. Although PLY is no longer distributed as a package, it is
+maintained as a mature library.  No new major features are planned, but 
+issues reported for bugs are still welcome. Any changes to the 
+software will be noted here.
+
+Version 2022.10.27
+------------------
+10/27/22  Reoganization/modernization of the build process. PLY continues
+          to make no package-installable releases.  However, you can now
+	  use the Makefile to build artifacts installable via pip.
+	  Use `make test` to test and `make build` to build.
+	  
+Version 2022_01_02
+------------------
+12/12/21  PLY is no longer being developed in public.  Instead
+          periodic versions will be posted.   In general, there has
+	  been an effort at cleanup and modernization. 
+          Here is a short summary of major changes:
+
+           - PLY no longer writes table files or cached data.  If you want this,
+             it's your responsibility to serialize the parser tables.  Use pickle.
+
+           - Elimination of side-effects and global variables (generally).
+
+           - Elimination of numerous optional features in an effort to 
+             simplify the API.
+
+           - More use of modern Python features including iterators/generators,
+             keyword-only arguments, f-strings, etc.
+
+           - Dropped support for Python 2.x
+
+01/26/20  PLY no longer writes cached table files.  Honestly, the use of
+          the cached files made more sense when I was developing PLY on
+          my 200Mhz PC in 2001. It's not as much as an issue now. For small
+          to medium sized grammars, PLY should be almost instantaneous. 
+          If you're working with a large grammar, you can arrange
+          to pickle the associated grammar instance yourself if need be.
+          The removal of table files eliminated a large number of optional
+          arguments to yacc() concerning the names and packages of these files.
+
+01/26/20  PLY no longer supports Python 2.x.
+
+01/01/20  Added an install.py script to make it easy to install PLY into
+          virtual environment if you just want to play with it.
+
+01/01/20  Some project reorganization. Moved the preprocessor and ctokens
+          file to the examples directory.  Bumped the version number.
+
+01/19/19  Some improvements to the preprocessor module contributed by
+          Rob Reilink.  Issue #195 fixes the evaluation of expressions
+          such as #if a != b.   Issue #196 fixes some some issues
+          related to the lack of a specified Unicode encoding on reading
+          text files.
+
+12/22/18  Incorporated some minor changes to eliminate warning messages
+          related to open() calls.
+
+Version 3.11
+---------------------
+02/15/18  beazley
+          Fixed some minor bugs related to re flags and token order.  
+          Github pull requests #151 and #153.
+
+02/15/18  beazley
+          Added a set_lexpos() method to grammar symbols.  Github issue #148.
+
+
+04/13/17  beazley
+          Mostly minor bug fixes and small code cleanups.
+
+Version 3.10
+---------------------
+01/31/17: beazley
+          Changed grammar signature computation to not involve hashing
+          functions. Parts are just combined into a big string.
+
+10/07/16: beazley
+          Fixed Issue #101: Incorrect shift-reduce conflict resolution with
+          precedence specifier.
+
+          PLY was incorrectly resolving shift-reduce conflicts in certain
+          cases.  For example, in the example/calc/calc.py example, you 
+          could trigger it doing this:
+
+          calc > -3 - 4            
+          1                         (correct answer should be -7)
+          calc >
+
+          Issue and suggested patch contributed by https://github.com/RomaVis
+           
+Version 3.9
+---------------------
+08/30/16: beazley
+          Exposed the parser state number as the parser.state attribute
+          in productions and error functions. For example:
+
+          def p_somerule(p):
+              '''
+              rule : A B C
+              '''
+              print('State:', p.parser.state)
+
+          May address issue #65 (publish current state in error callback).
+
+08/30/16: beazley 
+          Fixed Issue #88. Python3 compatibility with ply/cpp.
+
+08/30/16: beazley
+          Fixed Issue #93. Ply can crash if SyntaxError is raised inside
+          a production.   Not actually sure if the original implementation
+          worked as documented at all.  Yacc has been modified to follow
+          the spec as outlined in the CHANGES noted for 11/27/07 below.
+
+08/30/16: beazley
+          Fixed Issue #97. Failure with code validation when the original
+          source files aren't present.   Validation step now ignores
+          the missing file.
+
+08/30/16: beazley
+          Minor fixes to version numbers.
+
+Version 3.8
+---------------------
+10/02/15: beazley
+          Fixed issues related to Python 3.5. Patch contributed by Barry Warsaw.
+
 Version 3.7
 ---------------------
+08/25/15: beazley
+          Fixed problems when reading table files from pickled data.
+
 05/07/15: beazley
           Fixed regression in handling of table modules if specified as module
           objects.   See https://github.com/dabeaz/ply/issues/63
